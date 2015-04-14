@@ -38,9 +38,9 @@ Please refer to the [issues](https://github.com/learnchef/chefdk-fundamentals/is
 
 ## [10](scene_10.md) Connecting To Chef Server
 
-## [11](scene_11.md) Managing Multiple Nodes
+## [11](scene_11.md) Community Cookbooks
 
-## [12](scene_12.md) Community Cookbooks
+## [12](scene_12.md) Managing Multiple Nodes
 
 ## [13](scene_13.md) Roles
 
