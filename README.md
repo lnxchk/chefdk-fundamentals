@@ -2,15 +2,17 @@
 
 This is the outline for an in-person workshop. Each scene represents a series of activities that accomplish a goal and discover new concepts in Chef.
 
-Each scene is a markdown script (scene file). Each scene will have an accompanying slides (etc. pdf, keynote, powerpoint).
+Each scene is a markdown script (scene file). Each scene will have an accompanying slide deck (etc. pdf, keynote, powerpoint).
 
 Each scene is deliverable. Allowing for the development and refinement of scenes while the others may still need the initial script or slides.
 
 Please refer to the [issues](https://github.com/learnchef/chefdk-fundamentals/issues) to figure out what sections could use your attention.
 
-* Write the scene text - If you find a scene text is missing, write an initial outline of the scene. Don't worry someone will come through and clean it up. I promised. Plus it would be fun. You can help shape the words that are said aloud when the training is delivered. What should you used as inspiration? Well if there are slides then use those -- none of those, then well it's fresh snow!
+* Write the scene text - If you find a scene text is missing, write an initial outline of the scene. Don't worry someone will come through and clean it up. I promised. Plus it would be fun. You can help shape the words that are said aloud when the training is delivered. What should you use as inspiration? Well if there are slides then use those -- none of those, well then it's fresh snow!
 
 * Edit the scene text - I promised a few people that you would edit the scenes. They told me there all these delicious spelling errors and grammatical issues spread all over. Oh yeah - there is one more thing, if there are slides then make sure your major soap box moments get captured as slides.
+
+* Writing the speaker notes - If there is more context that could be useful to instructors but it probably doesn't apply to classes universally, add it to the speaker notes.  These notes are useful for providing pre-canned examples of additional context, communicating meta-narrative to other instructors, or other things that might fit into an instructor's guide.  The speaker notes are a deeper dive into things that may not fit neatly the scene text.
 
 * Writing the scene slides - If the slides aren't there then welcome to exciting world of Powerpoint. Hey if you don't have Powerpoint but have a great idea for slides -- do it anyways, because great content is great content.
 
