@@ -1,29 +1,34 @@
-## Community Cookbooks
+## Chef In-Depth
 
-We want the attendees to see the benefits of being an active part in the community. They have a new requirement in this section to deliver a load balancer to serve content to our web server.
+Having seen value from using Chef on Day 1, we follow up the lesson on managing their infrastructure with a Chef server by getting into basic Chef internals.  Once students begin experimenting with Chef on their own, they may hit common beginner pitfalls into despair.  This module prepares students with the knowledge they need to navigate learning how to apply Chef on their own successfully.
 
-The motivation is that we will then have the flexibility to add more web nodes when our traffic increases.
+Common beginner pitfalls into dispair include
 
-We outline the work or thought process on some proxy solutions and the work that we would have to perform and test to create a working solution.
+* The temptation to make everything an execute resource
+* Relying exclusively on node attributes in templates
+* Checking for conditions during compile time that really need to be checked during converge
+* Frustration when Chef produces errors they can't reason their way around
+* Thinking Chef is a magic pony because they're not familiar enough with basic internals to start code spelunking or docs diving
+* A lack of proper versioning practices and stepping on each other's toes by uploading untracked content
 
-Instead of walking the attendees through writing their own cookbook to manage a proxy server we invite them to find one on the Supermarket.
+To do this, we cover a few concepts (this may actually be two modules?).
 
-We demonstrate downloading and adding the haproxy cookbook.
+Students have run chef-client a number of times.  We dig into the anatomy of a chef-client run and the basic security model of chef-client.
 
-We explain that the primary interface for cookbooks with outside parties are through node attributes. Node attributes within the cookbooks allow us to pass parameters to those cookbooks.
+To see how these concepts impact common things they may have to do, we refactor the apache cookbook.
 
-We describe that we could edit the node attributes within the cookbook but then we would not be able to get upstream changes as the proxy cookbook receives updates and changes.
+We describe what we want: multiple websites.  For the non-apache familiar, we describe the steps that would need to occur in order for us to be able to do this.  We explain that automation does not replace the need for domain expertise.  In a real world scenario, students must understand the process they want to occur before they attempt to automate it.  For classroom purposes, this is the process we want to automate.
 
-We intro the attendees to the concept of wrapping a cookbook. Within the cookbook we demonstrate overriding a few attributes.
+We start by creating a new version of the apache cookbook.  We talk about the basics of semantic versioning.
 
-We ask the attendees to find and override the attributes allow us to specify our single host to receive the traffic.
+We open our apache cookbook.  We refactor this the long way.  Use an execute resource in here to disable our default apache vhost.  We talk about controlling idempotency by using guards and compile vs. converge considerations.  We describe why students should resist the temptation to effectively make Chef a giant script runner (bash++).
 
-The attendees demonstrate wrapper cookbook creation, testing, and uploading.
+We set up vhost1.  We set up vhost2.  Run it.  Does it work?  It should.  But that's long code.  What if we wanted another vhost?
 
-> This would be a good moment to introduce ChefSpec and the validation that the include_recipe is called and that the node attributes are set correctly for the execution. It could also be done with Test Kitchen and ServerSpec.
+We talk about data-driven cookbooks (this is the key concept they should be picking up).  Now that we have a pattern for what we're doing, we can abstract away a data model.  What bits are different between vhost1 and vhost2?  We create a data model that manages only those differences.
 
-We give the attendees a new node.
+We create a loop to iterate through the data model.  For each bit of data we find, do the repetitive tasks.  This is an AHA moment.  In this section, we introduce the use of template variables.
 
-The attendees bootstrap this new node and setup the new node to run the proxy cookbook and setup cookbook.
+Now that we know this recipe works, we purposefully introduce a config error (the standard bug).  Students run chef-client.  Predictably, this breaks.  In an open lab, students must now fix the error.
 
-We ask the attendees to verify that the traffic sent to the proxy node is forwarded to the web node.
+^-- Not sure how I feel about this.  Is it unfair for an open lab to introduce a new skill? 

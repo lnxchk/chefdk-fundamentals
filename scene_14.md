@@ -1,33 +1,42 @@
-## Search
+## Roles
 
-In our quest to ensure we are ready for the next web node (now defined with the web role). We left one requirement unfinished.
+> TODO: Needs to be translated into a spoken format
 
+Reasoning about our node was a great way to understand our system. We talk about the future of setting up more web nodes. We remind the attendees of the effort:
+
+* Bootstrapping a new node
+* Adding the web and setup cookbook
 * Updating the wrapper proxy cookbook to include this new node.
 
-We return to the wrapper proxy cookbook and we talk about wanting a way where we search for all of our web nodes and place them into our members list.
+We start to talk about ways we could make this process easier to perfom as we are obiviously going to get more web traffic than we know what to do with in the near future.
 
-We demonstrate using knife search to gain information about the node. We explain the format of a knife search. Drawing attention to the type of thing that is being searched for and the search criteria. We explain how the search criteria is defined. We provide links to the documentation on search syntax.
+We describe that in the future our web nodes and proxy nodes will likely add more cookbooks as more configuration pieces come our way. This means that with every new node that we setup we have to remember to add an ever increasingly size list of recipes.
 
-We demonstrate searching for some attributes and fields. We demonstrate searching for systems with the base role. We ask the attendees how best they would attempt to find all the web nodes. We ask them to formulate a search for that.
+We lead a discussion to ask them if this is a good way to express what this machine does. We could show them examples of runaway run_lists that would leave the attendees head scratching as to what the node did within the system.
 
-They demonstrate a search result set that returns the web nodes.
+We introduce roles as a way to properly label the function of a node.
 
-We describe to the attendees that they can also use search within the recipes. We explain that the format is very similar and returns a Ruby array of the items being requested.
+> We could talk about how we could have provided values to override coobkook attributes here within the role attributes. But the problem here is that there is no way to version roles.
 
-We explain how to create an array with items within it. We demonstrate adding an item to an array and removing an item off of the array. We demonstrate retrieving an item from the array. We demonstrate the `#each` method. We explain the format of the loop.
+We demonstrate creating a web role that has our two recipes: web and setup. Attendees demonstrate teh creation of a web role.
 
-We explain how to create a hash. We demonstrate defining a hash with keys and values.
+We ask the attendees to create a proxy role that has our two recipes: proxy and setup.
 
-We explain that with these three concepts they could:
+We lead a discussion about the redundancy of the setup cookbook. We also outline that the requirements for setup may increase as well.
 
-* search for all web nodes
-* iterate through each node
-* convert the node object into a hash of just the information for the proxy
-* add that item to an array that is passed to the proxy parameter
+We demonstrate updating the web role to include the base role. The attendees demonstrate updating the base role.
 
-We ask the attendees to demonstrate these steps. The attendees demonstrate updating their recipe to demonstrate these steps.
+We ask the attendees to create the base role which contains the setup recipe. We ask the attendees to update the proxy role to also use the base role.
 
-With that we take a moment to celebrate that if we were to add a new system to our organization that we could have it in the load balancer very quickly.
+We finish the section by explaining that the next node we would configure would now be much faster to setup.
 
+We demonstrate some additional bootstrap flags that allow us to provide an initial runlist for when we bootstrap the node.
 
+We close the section with these issues resolved:
 
+* Bootstrapping a new node
+* Adding the web and setup cookbook
+
+And we leave the section with these issues unresolved:
+
+* Updating the wrapper proxy cookbook to include this new node.

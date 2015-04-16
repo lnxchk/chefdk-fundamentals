@@ -1,13 +1,33 @@
-## Environments
+## Search
 
-We celebrate the effecient system we finished in the last section. We are now able to spin up new nodes when needed. Now we need to consider what happens when we want to start developing new features for any of our cookbooks. How can we be sure that the version of the cookbook is the correct one working in production.
+In our quest to ensure we are ready for the next web node (now defined with the web role). We left one requirement unfinished.
 
-We introduce the concept of the environment. We explain the purpose of being able to separate the nodes into different segments. Most importantly we describe the ability to pin specific versions of cookbooks to our environments.
+* Updating the wrapper proxy cookbook to include this new node.
 
-We demonstrate creating a 'delivered' environment. We create a list of cookbook requirements of all our current working versions of our cookbooks. We ask the attendees to demonstrate adding cookbook versions to the 'delivered' environment.
+We return to the wrapper proxy cookbook and we talk about wanting a way where we search for all of our web nodes and place them into our members list.
 
-We demonstrate setting a node to the delivered environment. The attendees set their nodes to the delivered environment.
+We demonstrate using knife search to gain information about the node. We explain the format of a knife search. Drawing attention to the type of thing that is being searched for and the search criteria. We explain how the search criteria is defined. We provide links to the documentation on search syntax.
 
-We explain that we are able to work on changes to existing cookbooks without affecting the systems in production.
+We demonstrate searching for some attributes and fields. We demonstrate searching for systems with the base role. We ask the attendees how best they would attempt to find all the web nodes. We ask them to formulate a search for that.
 
-We ask the attendees to add a new resource to the setup cookbook, update the version, and upload the cookbook. We ask the attendees to converge the nodes and see that the nodes were not affected by the new cookbook work.
+They demonstrate a search result set that returns the web nodes.
+
+We describe to the attendees that they can also use search within the recipes. We explain that the format is very similar and returns a Ruby array of the items being requested.
+
+We explain how to create an array with items within it. We demonstrate adding an item to an array and removing an item off of the array. We demonstrate retrieving an item from the array. We demonstrate the `#each` method. We explain the format of the loop.
+
+We explain how to create a hash. We demonstrate defining a hash with keys and values.
+
+We explain that with these three concepts they could:
+
+* search for all web nodes
+* iterate through each node
+* convert the node object into a hash of just the information for the proxy
+* add that item to an array that is passed to the proxy parameter
+
+We ask the attendees to demonstrate these steps. The attendees demonstrate updating their recipe to demonstrate these steps.
+
+With that we take a moment to celebrate that if we were to add a new system to our organization that we could have it in the load balancer very quickly.
+
+
+
