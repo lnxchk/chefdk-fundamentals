@@ -38,11 +38,9 @@ Is nano installed? No it doesn't look like it.
 
 Is vim installed? No it doesn't look like it either.
 
---
+-
 
 Is emacs installed? Seems like it isn't as well.
-
---
 
 It seems your workstation doesn't have any of the preferred command-line editors installed. So that means there is a little more configuration left for you to do.
 
