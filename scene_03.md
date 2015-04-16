@@ -18,7 +18,7 @@ There are three command-line editors that we can choose from. Each with their ow
 
 * Emacs
 
-Emacs is fairly straightforward for editing files. It uses a chorded key system for commands. So the commands for writing to a file and existing all start with CTRL+X and are their respective command.
+Emacs is fairly straightforward for editing files. It uses a chorded key system for commands. So the commands for writing to a file and exiting all start with CTRL+X and are their respective command.
 
 * Nano
 
@@ -126,7 +126,7 @@ Let's verify that the editor is installed by again using the `which` command. I 
 
 * What happens when I run the command again?
 
-Before you execute the command. Think about what will happen. Think about what you would want to happen. Look at the output from the previous. Then take a guess. Write it down or type out what you think will happen.
+Before you execute the command. Think about what will happen. Think about what you would want to happen. Look at the output from the previous run. Then take a guess. Write it down or type out what you think will happen.
 
 Then run the command again
 
@@ -138,7 +138,7 @@ What would the output look like when you run this command? Was there a situation
 
 -
 
-Hopefully it is clear from running the `chef-apply` command a few times that the resource we defined only takes action only when it needs to take action.
+Hopefully it is clear from running the `chef-apply` command a few times that the resource we defined only takes action when it needs to take action.
 
 We call this test and repair. Meaning the resource first tested the system before it takes action.
 
@@ -184,7 +184,7 @@ And to prove that a file was created you can use the `cat` command with the path
 
 So what happens when I run the command again?
 
-Again before you run the command -- think about it. What are your expectations now from the last time you ran it? What will the ouput look like?
+Again before you run the command -- think about it. What are your expectations now from the last time you ran it? What will the output look like?
 
 -
 
@@ -288,6 +288,8 @@ What is the resource definition for this description: `The file named "/etc/motd
 -
 
 Here is the final version of the `setup.rb` file that installs all the editors, our tree package, and creates our MOTD file.
+
+-
 
 Let's finish up this section on resources with a discussion.
 
