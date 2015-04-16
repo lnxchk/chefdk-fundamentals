@@ -51,3 +51,9 @@ Please refer to the [issues](https://github.com/learnchef/chefdk-fundamentals/is
 ## [16](scene_16.md) Wrap Up
 
 ## [17](scene_17.md) Further Resources
+
+# Recordings
+
+View the recordings (audio/video) of select sections to help deliver the content
+
+https://drive.google.com/drive/u/0/folders/0BxSqvX6gSnKCSFpvUHI3Xzl0alE/0B1nt6eQeCbyRfnlSYXd2Y2JKU2hLZjl6cUpGLVlndEo0bjhRS3pjRU1iWVhkOEJwNkYzVVU
