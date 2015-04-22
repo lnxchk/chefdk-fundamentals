@@ -1,3 +1,7 @@
+An attribute is a specific detail about a node understand:
+* The current state of the node
+* What the state of the node was at the end of the previous chef-client run
+* What the state of the node should be at the end of the current chef-client run
 
 
 ___
