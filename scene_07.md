@@ -1,42 +1,66 @@
-A Chef attribute can be seen as a variable to understand:
-* The current state of the node
-* What the state of the node was at the end of the previous chef-client run
-* What the state of the node should be at the end of the current chef-client run
-
+Have you ever had to manage a large number of servers that were almost identical, except that each one had to have some host-specific information in some config file somewhere?
+Maybe they needed to have the hostname embedded in the config file, or an IP address, or the name of an NFS filesystem on a mount point.
+Maybe you needed to allocate 2/3 of available system memory into hugepages for a database. Maybe you needed to set your thread max to ([number of CPUs] – 1). And each one had to be managed by hand!
 
 ___
 
-Attribute implements a nested key-value (Hash) and flat collection (Array) data structure supporting multiple levels of precedence, such that a given key may have multiple values internally, but will only return the highest precedence value when reading
-___
-
-
-
-###Attribute Sources
-
-Let's look at cookbooks/apache/attributes/default.rb which is where we'll be defining the variable options for installing and running Apache.
-
-A Chef attribute can be seen as a variable that:
-
-1) gets initialized to a default value in cookbooks/apache/attributes/default.rb
-
-Examples:
-
-default[:apache][:dir] = "/etc/apache2"
-default[:apache][:indexfile] = "index1.html"
+Some Useful System Data includes
+* IP Address
+* hostname
+* memory
+* CPU- Mhz
 
 ___
-
-2) gets used in cookbook recipes such as cookbooks/apache/recipes/default.rb or any other myrecipefile.rb in the recipes directory; the syntax for using the attribute's value is of the form #{node[:apache][:attribute_name]}
-___
-
-3) can be overridden at either the role or the node level (and some other more obscure levels that I haven't used in practice)
-
+To Discover the ipaddress of the node, we can issue the command
+hostname -l
 
 ___
+We can include this information in our recipe
+file "/etc/motd" do
+  content "Property of ...
+  IPADDRESS: 104.236.192.102"
 
-### Attribute Precedence
+  mode "0644"
+  owner "root"
+  group "root"
+end
 
-I prefer to override attributes at the role level, because I want those overridden values to apply to all nodes pertaining to that role.
+___
+Next we need to have the hostname embedded in the config file.
+hostname = banana-stand
+
+Let's go ahead and include this also in our recipe
+___
+
+We need to allocate 2/3 of avialble system memory, lets discover the memory
+MemTotal: 502272 kB
+
+Adding the memory in the recipe
+
+file "/etc/motd" do
+  content "Property of ...
+  IPADDRESS: 104.236.192.102
+  HOSTNAME : banana-stand
+  MEMORY   : 502272 kB"
 
 
+  mode "0644"
+  owner "root"
+  group "root"
+end
+___
+
+Next we need to set our thread max to ([number of CPU's]) - Lets discover the cpu -MHz
+
+file "/etc/motd" do
+  content "Property of ...
+  IPADDRESS: 104.236.192.102
+  HOSTNAME : banana-stand
+  MEMORY   : 502272 kB
+  CPU      : 2399.998MHz"
+
+  mode "0644"
+  owner "root"
+  group "root"
+end
 ___
