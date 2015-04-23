@@ -1,66 +1,70 @@
 ## Cookbooks
 
-Well the recipe that you put together to do a little setup seemed useful enough to see if the same could be done with a webserver. That shouldn't be a problem right? It's a package, a file, and a service.
+Well the recipe that you put together to do a little setup proved useful. Useful enough to see if the same could be done with a webserver. That shouldn't be a problem right? It's a package, a file, and a service. Everything you've already completed.
 
-Version control and a README would definitely make it easier to share the recipes that we create. Without version control we'd have no way to recover our work, allow us to build this software together. Without a README no one would know what the recipe even was suppose to do or what it did.
-
--
-
-Let's tackle this head on. If we're going to use Chef as a configuration management tool and we're going to treat our infrastructure as code we need to make sure that we start using version control.
+Version control and a README would definitely make it easier to share the recipes that we create. Without version control we'd have no way to recover our work and allow us to build this software collaboratively. Without a README no one would know what the recipe even was suppose to do or what it did.
 
 -
 
-What's the best way to learn Chef? Use Chef. I want you to literally run Chef. Yes the company that already has a hard enough time to get high ranking in the Google space releases a tool named after the company and the product. Try finding good support for that.
+Lets tackle this head on. If we're going to use Chef as a configuration management tool and we're going to treat our infrastructure as code we need to make sure that we start using version control.
 
 -
 
-Fortunately you don't have to because the tool is a fairly straight-forward command-line executable that does quite a few things. The most important of which for us is its ability to to generate cookbooks and components.
+What's the best way to learn Chef? Use Chef. I want you to literally run Chef. Yes the company that is hard to search for created a command-line tool named after the company and the product.
+
+-
+
+Chef is a command-line application that does quite a few things. The most important of which for us is its ability to to generate cookbooks and components.
 
 But what is a cookbook?
 
 -
 
-Let's look up cookbooks in Chef's documentation. Visit the docs page on cookbooks an read the first three paragraphs.
+Lets look up cookbooks in Chef's documentation. Visit the docs page on cookbooks an read the first three paragraphs.
 
 > This sounds CRAZY to ask people in a physical classroom to read this content but it is important that they learn to read the documentation.
 
-A cookbook is a structure that contains recipes. Both here in the traditional sense. A cookbook can contain other things as well as the entry goes on to say.
+A cookbook is a structure that contains recipes. It can also contain a number of other things but right now we are interested in a finding a home for our recipes.
 
 -
 
-Well let's examine the chef generate command. We have a number of options. Sounds like if we want to generate a cookbook we're going to need to use the cookbook in the command.
+Well lets examine the chef generate command. We see the command is capable of generaint a large number of things for us. Sounds like if we want to generate a cookbook we're going to need to use the cookbook in the command.
+
+Lets ask the `chef generate cookbook` for help to see how the command is used.
 
 -
 
-Alright. So to generate a cookbook all we have to is provide with a name. Uh oh! There are two hard things in Computer Science and half of the hard things is namely stuff.
+Alright. To generate a cookbook all we have to do is provide with a name. Uh oh! Naming things - there are two hard things in Computer Science and one of those is giving something a name.
 
 -
 
-Don't worry I have you covered. Call the cookbook setup. It's the setup cookbook. Create the setup coobook.
+Don't worry I have you covered. Call the cookbook setup. That's a generic enough name.
+
+Create a cookbook named 'setup'.
 
 -
 
-Aren't you curious whats inside it? Let's take a peek with the help of the `tree` command. If we provide it a path we'll s all the visible files in the specified directory.
+Aren't you curious whats inside it? Lets take a peek with the help of the `tree` command. If we provide `tree` with a path we will see all the visible files in the specified directory.
 
-So the chef generated an outline of a cookbook with a number of default files and directories. The first one we'll focus on is the README.
+So the chef cookbook generator created an outline of a cookbook with a number of default files and directories. The first one we'll focus on is the README.
 
-> People will want to talk about the Berksfile. Remember our goal is to add a README and find our way to version control.
+> People will want to talk about the Berksfile. Remember our goal is to add a README and find our way to version control. Take it to the parking lot
 
 -
 
-All cookbooks that chef will generate for you will include a default README file. The contents of the file adhere the markdown standard. It's a way to organize text in heirachical structures. It's all the rage for documentation.
+All cookbooks that chef will generate for you will include a default README file. The extension m-d means that the file is a markdown file. Markdown files are text documents that use various punctuation characters to provided formatting. They are meant to be easily readable by humans and by machines which can render them as HTML.
 
 -
 
 The cookbook also has a metadata file.
 
+- 
+
+This is a ruby file that contains its own domain specific language (DSL) for describing the details about the cookbook.
+
 -
 
-This is a ruby file that contains a domain specific language (DSL) for describing the details about the cookbook. To include version number, contact for the code and more.
-
--
-
-If you cat the contents of our new cookbook's metadata you'll see a number of details that help describe the cookbook. The name of the cookbook, its maintainer, a way to reach them, how the cookbook is licensed, descriptions, and the important version number.
+If you cat the contents of our new cookbook's metadata you'll see a number of details that help describe the cookbook. The name of the cookbook, its maintainer, a way to reach them, how the cookbook is licensed, descriptions, and the cookbook's version number.
 
 -
 
@@ -68,7 +72,7 @@ The cookbook also has a folder named recipes. This is where we store the recipes
 
 -
 
-Looking at the contents of the default recipe you'll find its empty except for some comments. A cookbook doesn't have to have a default recipe but most every cookbook has one. It's called default because when you think of a cookbook it is probably the recipe that defines the most common configuration policy.
+Looking at the contents of the default recipe you'll find its empty except for some ruby comments. A cookbook doesn't have to have a default recipe but most every cookbook has one. It's called default because when you think of a cookbook it is probably the recipe that defines the most common configuration policy.
 
 -
 
@@ -76,7 +80,7 @@ Lets copy or move our recipe to the setup cookbook and place it alongside our de
 
 -
 
-Well now that we have our cookbook with its README and version number its time to add it to source control. We are going to use git in this workshop but you are welcome to use tools that are most effective for your team.
+Well now that we have our cookbook with its README and version number its time to add it to source control. We are going to use git in this workshop but you are welcome to use version control tools that are the most effective for your team.
 
 -
 
@@ -84,7 +88,7 @@ Is git installed? Do we know if it will be installed with every new instance tha
 
 It sounds like we need the tool now to store our cookbook but we also want to define a policy that git is installed on all of our workstations.
 
-Let's update our setup cookbook's setup recipe, not our setup recipe, to define a new statement of configuration policy:
+Lets update our setup cookbook's setup recipe to define a new statement of configuration policy:
 
 The package named 'git' is installed
 
@@ -92,7 +96,7 @@ The package named 'git' is installed
 
 -
 
-Same as before we add our packaged named 'git' to the setup recipe within our setup cookbook.
+We add a package resource named 'git' to the setup recipe within our setup cookbook.
 
 -
 
@@ -100,11 +104,11 @@ Then we use chef-apply to apply our recipe. The recipe path has changed. Remembe
 
 -
 
-That's not really delightful. It is great to store recipes within a cookbook but it would be get tiresome working with recipes in this way. Constantly having to specify the path.
+That's not really delightful. It is great to store recipes within a cookbook but its tiresome working with recipes in this way. Constantly having to specify this entire path.
 
 And that's because `chef-apply` is a great tool to explore concepts within Chef but it is not the tool that you will be using on your production systems.
 
-There is another tool named 'chef-client' which we will explore later.
+There is another tool named 'chef-client' which we will explore in the next section.
 
 -
 
@@ -112,11 +116,11 @@ Now with git installed, it's time for us to actually add the cookbook to source 
 
 -
 
-Let's change directories into the setup cookbook.
+Lets change directories into the setup cookbook.
 
 -
 
-We want to git to start tracking the entire contents of this folder and any subfolders. To do that with git you execute the command `git init` in the parent directory you want to start tracking in source control.
+We want git to start tracking the entire contents of this folder and any content in the subfolders. To do that with git you execute the command `git init` in the parent directory you want to start tracking.
 
 -
 
@@ -124,17 +128,29 @@ Now we need to tell git what files it should start tracking in source control. I
 
 This will place all the files into a staging area.
 
-I like to think of the staging area as placing bunch of items into a box. A care package you were going to send a love one. And staging them means - put them in the box, don't close it up because I may add a few things, don't close it up because I may replace or remove a few things. But put the items in the box because eventually we're going to close that box up and ship it out to you.
+-
+
+I like to think of the staging area as placing bunch of items into a box. Like a care package you would send to a love one. 
+
+Staging files means - put them in the box, don't close it up because I may add a few things, don't close it up because I may replace or remove a few things. But put the items in the box because eventually we're are going to close that box - when it ready and send it off.
 
 -
 
-Let's look inside the box. What are we going to sending to someone if we were to close this box up. Running `git status` allows us to see in the box. Git will report back to us the changes that will be commited.
+Lets look to see what changes we have placed in the staging area often expressed as staged to commit.
+
+Thinking about our care package example, this is like looking inside the box and taking an inventory. Allowing us to figure out if we need to move things around or we're ready to close it it.
+
+Running `git status` allows us to see in the box. Git reports back to us the changes that will be commited.
 
 > Git helpfully tries to show you the command you can use to remove an item from that box. This is useful if you want to include all items excepts for one or simply manage everything before you commit.
 
 -
 
-If everything looks like it should be in the box. Then we're going to seal it up. That is done in git with `git commit`. We can optionally provide a message on the command-line and that is done with the DASH-m flag and then a string of text that describes that change.
+If everything that is staged looks correct then we are ready to commit the changes.
+
+That is like saying we're ready to close the box up.
+
+That is done in git with `git commit`. We can optionally provide a message on the command-line and that is done with the DASH-m flag and then a string of text that describes that change.
 
 > Without that flag git attempts to use the system that you've defined as your default EDITOR.
 
@@ -142,11 +158,11 @@ If everything looks like it should be in the box. Then we're going to seal it up
 
 -
 
-So again, within the cookbook we are going to initialize the repository. Then we are staging every file in the repository. And then finally committing all those staged changes.
+So again, within the cookbook, we are going to initialize the repository. Then we are placing every file in into the staging area. And finally committing all those staged changes.
 
 -
 
-Now that we're done adding source control to the setup cookbook lets return our home directory.
+Now that we're done adding our setup cookbook to source control lets return our home directory.
 
 -
 
@@ -154,7 +170,9 @@ We got a little sidetracked with cookbooks, versioning, and source control. Reme
 
 -
 
-Thinking about what we accomplished so far, that totally seems possible. We would need to write a recipe that defines the policy for apache. Create a cookbook to store that recipe and then add the cookbook to version control.
+Thinking about what we accomplished so far that totally seems possible.
+
+We would need to write a recipe that defines the policy for apache. Create a cookbook to store that recipe and then add the cookbook to version control.
 
 So show me it can be done!
 
@@ -162,34 +180,36 @@ So show me it can be done!
 
 -
 
-Alright first I would leverage chef and chef generate helpers to create a cookbook for me. From my home directory running the command `chef generate cookbook apache`. This will place the apache cookbook alongside our setup cookbook.
+Alright first I would leverage chef and the chef generate tool to create a cookbook for me. From my home directory running the command `chef generate cookbook apache`. This will place the apache cookbook alongside the setup cookbook.
 
 -
 
 The apache recipe defines the policy:
 
-* The package named "httpd" is installed.
+* The package named h-t-t-p-d is installed.
 
-* The file named "/var/www/html/index.html" is created with the content "<h1>Hello, world!</h1>"
+* The file named slash-var-dub-dub-dub-slash-h-t-m-l-slash-index-dot-h-t-m-l is created with the content "Hello, world!"
 
-* The service named "httpd" is started and enabled.
+* The service named h-t-t-p-d is started and enabled.
 
--
-
-Applying the commmand with `chef-apply` I need to specify the partial path to the recipe file.
+For service you could define two resources with the same name and the two actions: start and enable. But you are also welcome to combine these actions together into a Ruby array and provide that as a value to the action attribute.
 
 -
 
-Finally its time to add the cookbook to version control.
+Applying the recipe with `chef-apply` I need to specify the partial path to the recipe file within the apache cookbook's recipe folder.
+
+-
+
+Finally its time to add the apache cookbook to version control.
 
 * Move into that directory
 * Initialize the cookbook as a git repository
 * Add all the files within the cookbook
-* Commit all the files
+* And commit all the files
 
 -
 
-What questions can we answer for you?
+What questions can we help you answer?
 
-General questions or more specifically about cookbooks, versioning and version control?
+General questions or more specifically about cookbooks, versioning and version control.
 
