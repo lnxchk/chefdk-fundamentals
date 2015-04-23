@@ -2,13 +2,13 @@
 
 I mentioned that in the previous section how I would talk about chef-client as being an alternative to chef-apply.
 
-Remember I said: `chef-apply` was a great to allow us to explore resources in strings and in recipe files. However, the tool does not understand the concept of a cookbook.
+Remember I said: `chef-apply` was a great tool to allow us to explore resources in strings and in recipe files. However, the tool does not understand the concept of a cookbook.
 
 -
 
 In the ChefDK we package another tool. An older sibling, if you will, to the chef-apply command and that is `chef-client`.
 
-`chef-client` is a command-line application that be used to apply to our local system, a recipe or multiple recipes defined in cookbooks. It also has the ability to communicate with a Chef server. A concept we will talk about in another section. For now think of the Chef Server as an central, artifact repository that we will later store our cookbooks.
+`chef-client` is a command-line application that can be used to apply a recipe or multiple recipes. It also has the ability to communicate with a Chef server. A concept we will talk about in another section. For now think of the Chef Server as an central, artifact repository that we will later store our cookbooks.
 
 -
 
@@ -38,9 +38,11 @@ Before we start applying cookbooks through chef-client, make sure you are in you
 
 -
 
-Lets try applying our apache recipe from the apache cookbook using `chef-client` in local mode. Upon execution you unfortunately be presented with an error.
+Lets try applying our apache recipe from the apache cookbook using `chef-client` in local mode.
 
-When executed we find that `chef-client` has an additional requirement that describes in the output. `chef-client` expects our cookbooks to be maintained in a directory named 'cookbooks'.
+Upon execution you unfortunately are presented with an error.
+
+When executed we find that `chef-client` has an additional requirement. `chef-client` expects our cookbooks to be maintained in a directory named 'cookbooks'.
 
 That seems simple enough to accomodate and a good way to start organizing the cookbooks that we are creating.
 
@@ -88,7 +90,7 @@ Lets start by updating the setup cookbook's default recipe to run our setup reci
 
 -
 
-A simple solution would be to rename the setup recipe to the default recipe. However, a better practice would instead leave our recipes as they are and instead have the default recipe include our setup recipe using `include_recipe`.
+A simple solution would be to rename the setup recipe to the default recipe. However, a better practice would instead leave our recipes as they are and have the default recipe include our setup recipe using a method called `include_recipe`.
 
 This allows us to maintain all the current setup instructions within its own recipe file. Useful when we start to develop new recipes, say for different platforms or system types.
 
@@ -110,6 +112,24 @@ We are interested in having the default recipe for our setup cookbook run the co
 
 -
 
-What questions can we answer for you?
+We can now use chef-client to locally apply the cookbook named setup. This will load our setup cookbook's default recipe which in turn loads our setup cookbook's setup recipe.
+
+-
+
+An exercise for you is to update the apache cookbook's default recipe to include the apache cookbook's recipe named apache.
+
+Then re-run chef-client with a run_list that applies the recipe-open-bracket-apache-close-bracket.
+
+-
+
+The updated default recipe should look like the following.
+
+-
+
+And the command that we run should similar use our more succint run list.
+
+-
+
+What questions can we help you answer?
 
 Generally or specifically about chef-client, local mode, run lists, and include_recipe.
