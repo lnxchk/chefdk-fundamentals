@@ -194,7 +194,7 @@ The apache recipe defines the policy:
 
 * The package named h-t-t-p-d is installed.
 
-* The file named slash-var-dub-dub-dub-slash-h-t-m-l-slash-index-dot-h-t-m-l is created with the content "Hello, world!"
+* The file named slash-var-slash-dub-dub-dub-slash-h-t-m-l-slash-index-dot-h-t-m-l is created with the content "Hello, world!"
 
 * The service named h-t-t-p-d is started and enabled.
 
@@ -211,11 +211,10 @@ Finally its time to add the apache cookbook to version control.
 * Move into that directory
 * Initialize the cookbook as a git repository
 * Add all the files within the cookbook
-* And commit all the files
+* And commit all the files in the staging area
 
 -
 
 What questions can we help you answer?
 
 General questions or more specifically about cookbooks, versioning and version control.
-
