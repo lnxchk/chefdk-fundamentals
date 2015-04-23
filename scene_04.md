@@ -1,8 +1,12 @@
 ## Cookbooks
 
-Well the recipe that you put together to do a little setup proved useful. Useful enough to see if the same could be done with a webserver. That shouldn't be a problem right? It's a package, a file, and a service. Everything you've already completed.
+Well the recipe that you put together to setup the workstation proved useful. Useful enough to see if the same could be done with a webserver.
 
-Version control and a README would definitely make it easier to share the recipes that we create. Without version control we'd have no way to recover our work and allow us to build this software collaboratively. Without a README no one would know what the recipe even was suppose to do or what it did.
+That shouldn't be a problem right?
+
+It's a package, a file, and a service. Everything you've already completed.
+
+Now the request to add version control and a README would definitely make it easier to share the recipes that we create. Without version control we'd have no way to recover our work and allow us to build this software collaboratively. Without a README no one would know what the recipe even was suppose to do or what it did.
 
 -
 
@@ -10,11 +14,11 @@ Lets tackle this head on. If we're going to use Chef as a configuration manageme
 
 -
 
-What's the best way to learn Chef? Use Chef. I want you to literally run Chef. Yes the company that is hard to search for created a command-line tool named after the company and the product.
+What's the best way to learn Chef? Use Chef. I want you to literally run Chef.
 
 -
 
-Chef is a command-line application that does quite a few things. The most important of which for us is its ability to to generate cookbooks and components.
+Chef is a command-line application that does quite a few things. The most important thing to us right now is its ability to generate cookbooks and components.
 
 But what is a cookbook?
 
@@ -24,23 +28,23 @@ Lets look up cookbooks in Chef's documentation. Visit the docs page on cookbooks
 
 > This sounds CRAZY to ask people in a physical classroom to read this content but it is important that they learn to read the documentation.
 
-A cookbook is a structure that contains recipes. It can also contain a number of other things but right now we are interested in a finding a home for our recipes.
+A cookbook is a structure that contains recipes. It can also contain a number of other things but right now we are interested in a finding a home for our recipes, giving them a version, and provide a README to help describe them.
 
 -
 
-Well lets examine the chef generate command. We see the command is capable of generaint a large number of things for us. Sounds like if we want to generate a cookbook we're going to need to use the cookbook in the command.
+Well lets examine the chef generate command. We see the command is capable of generating a large number of things for us. Sounds like if we want to generate a cookbook we're going to need to use 'chef generate cookbook'.
 
-Lets ask the `chef generate cookbook` for help to see how the command is used.
+Lets ask the `chef generate cookbook` command for help to see how it is used.
 
 -
 
-Alright. To generate a cookbook all we have to do is provide with a name. Uh oh! Naming things - there are two hard things in Computer Science and one of those is giving something a name.
+Alright. To generate a cookbook all we have to do is provide it with a name. Uh oh! Naming things - there are two hard things in Computer Science and one of those is giving something a name.
 
 -
 
 Don't worry I have you covered. Call the cookbook setup. That's a generic enough name.
 
-Create a cookbook named 'setup'.
+I want you to use chef generate to generate a cookbook named 'setup'.
 
 -
 
@@ -52,13 +56,13 @@ So the chef cookbook generator created an outline of a cookbook with a number of
 
 -
 
-All cookbooks that chef will generate for you will include a default README file. The extension m-d means that the file is a markdown file. Markdown files are text documents that use various punctuation characters to provided formatting. They are meant to be easily readable by humans and by machines which can render them as HTML.
+All cookbooks that chef will generate for you will include a default README file. The extension m-d means that the file is a markdown file. Markdown files are text documents that use various punctuation characters to provide formatting. It is meant to be easily readable by humans and can be easily be rendered as HTML or other formats.
 
 -
 
 The cookbook also has a metadata file.
 
-- 
+-
 
 This is a ruby file that contains its own domain specific language (DSL) for describing the details about the cookbook.
 
@@ -104,7 +108,7 @@ Then we use chef-apply to apply our recipe. The recipe path has changed. Remembe
 
 -
 
-That's not really delightful. It is great to store recipes within a cookbook but its tiresome working with recipes in this way. Constantly having to specify this entire path.
+It is great to store recipes within a cookbook but its tiresome working with recipes in this way. Constantly having to specify this entire path. That's not really delightful.
 
 And that's because `chef-apply` is a great tool to explore concepts within Chef but it is not the tool that you will be using on your production systems.
 
@@ -120,7 +124,7 @@ Lets change directories into the setup cookbook.
 
 -
 
-We want git to start tracking the entire contents of this folder and any content in the subfolders. To do that with git you execute the command `git init` in the parent directory you want to start tracking.
+We want git to start tracking the entire contents of this folder and any content in the subfolders. To do that with git you execute the command `git init` in the parent directory of the cookbook you want to start tracking.
 
 -
 
@@ -130,15 +134,15 @@ This will place all the files into a staging area.
 
 -
 
-I like to think of the staging area as placing bunch of items into a box. Like a care package you would send to a love one. 
+I like to think of the staging area as placing bunch of items into a box. Like a care package you would send to a love one.
 
-Staging files means - put them in the box, don't close it up because I may add a few things, don't close it up because I may replace or remove a few things. But put the items in the box because eventually we're are going to close that box - when it ready and send it off.
+Staging files means - put them in the box, don't close it up because I may add a few things, don't close it up because I may replace or remove a few things. But put the items in the box because eventually we are going to close that box - when it is ready to send it off.
 
 -
 
-Lets look to see what changes we have placed in the staging area often expressed as staged to commit.
+Lets look to see what changes we have placed in the staging area.
 
-Thinking about our care package example, this is like looking inside the box and taking an inventory. Allowing us to figure out if we need to move things around or we're ready to close it it.
+Thinking about our care package example, this is like looking inside the box and taking an inventory. Allowing us to figure out if we need to move things around or we're ready to close it.
 
 Running `git status` allows us to see in the box. Git reports back to us the changes that will be commited.
 
@@ -158,11 +162,11 @@ That is done in git with `git commit`. We can optionally provide a message on th
 
 -
 
-So again, within the cookbook, we are going to initialize the repository. Then we are placing every file in into the staging area. And finally committing all those staged changes.
+So again, within the cookbook, we initialize the git repository. Place every file in the cookbook into the staging area. And finally commit all those staged changes.
 
 -
 
-Now that we're done adding our setup cookbook to source control lets return our home directory.
+Now that we are done adding our setup cookbook to source control lets return to our home directory.
 
 -
 
@@ -180,7 +184,7 @@ So show me it can be done!
 
 -
 
-Alright first I would leverage chef and the chef generate tool to create a cookbook for me. From my home directory running the command `chef generate cookbook apache`. This will place the apache cookbook alongside the setup cookbook.
+Alright first I would leverage the chef command-line application to generate a cookbook for me. From my home directory running the command `chef generate cookbook apache`. This will place the apache cookbook alongside the setup cookbook.
 
 -
 
@@ -192,7 +196,7 @@ The apache recipe defines the policy:
 
 * The service named h-t-t-p-d is started and enabled.
 
-For service you could define two resources with the same name and the two actions: start and enable. But you are also welcome to combine these actions together into a Ruby array and provide that as a value to the action attribute.
+For service you could define two resources with the same name and each with a different action: start and enable. But you can also to combine these actions together into a Ruby array and provide that as a value to the action attribute.
 
 -
 
