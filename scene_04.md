@@ -6,11 +6,15 @@ That shouldn't be a problem right?
 
 It's a package, a file, and a service. Everything you've already completed.
 
-Now the request to add version control and a README would definitely make it easier to share the recipes that we create. Without version control we'd have no way to recover our work and allow us to build this software collaboratively. Without a README no one would know what the recipe even was suppose to do or what it did.
+Now the request to add version control and a README would definitely make it easier to share the recipes that we create.
+
+Without version control we'd have no way to build this software collaboratively or recover our work.
+
+Without a README no one would know what the recipe even was suppose to do or what it did.
 
 -
 
-Lets tackle this head on. If we're going to use Chef as a configuration management tool and we're going to treat our infrastructure as code we need to make sure that we start using version control.
+Lets tackle this head on. If we're going to use Chef as a configuration management tool and we are going to treat our infrastructure as code we need to make sure that we start using version control.
 
 -
 
@@ -28,11 +32,11 @@ Lets look up cookbooks in Chef's documentation. Visit the docs page on cookbooks
 
 > This sounds CRAZY to ask people in a physical classroom to read this content but it is important that they learn to read the documentation.
 
-A cookbook is a structure that contains recipes. It can also contain a number of other things but right now we are interested in a finding a home for our recipes, giving them a version, and provide a README to help describe them.
+A cookbook is a structure that contains recipes. It also contains a number of other things -- but right now we are most interested in a finding a home for our recipes, giving them a version, and providing a README to help describe them.
 
 -
 
-Well lets examine the chef generate command. We see the command is capable of generating a large number of things for us. Sounds like if we want to generate a cookbook we're going to need to use 'chef generate cookbook'.
+Well lets examine the chef generate command. We see the command is capable of generating a large number of different things for us. Sounds like if we want to generate a cookbook we're going to need to use 'chef generate cookbook'.
 
 Lets ask the `chef generate cookbook` command for help to see how it is used.
 
@@ -48,15 +52,13 @@ I want you to use chef generate to generate a cookbook named 'setup'.
 
 -
 
-Aren't you curious whats inside it? Lets take a peek with the help of the `tree` command. If we provide `tree` with a path we will see all the visible files in the specified directory.
+Aren't you curious whats inside it? Lets take a look with the help of the `tree` command. If we provide `tree` with a path we will see all the visible files in the specified directory.
 
-So the chef cookbook generator created an outline of a cookbook with a number of default files and directories. The first one we'll focus on is the README.
-
-> People will want to talk about the Berksfile. Remember our goal is to add a README and find our way to version control. Take it to the parking lot
+So the chef cookbook generator created an outline of a cookbook with a number of default files and folders. The first one we'll focus on is the README.
 
 -
 
-All cookbooks that chef will generate for you will include a default README file. The extension m-d means that the file is a markdown file. Markdown files are text documents that use various punctuation characters to provide formatting. It is meant to be easily readable by humans and can be easily be rendered as HTML or other formats.
+All cookbooks that chef will generate for you will include a default README file. The extension m-d means that the file is a markdown file. Markdown files are text documents that use various punctuation characters to provide formatting. It is meant to be easily readable by humans and can be easily be rendered as HTML or other formats by computers.
 
 -
 
@@ -120,7 +122,7 @@ Now with git installed, it's time for us to actually add the cookbook to source 
 
 -
 
-Lets change directories into the setup cookbook.
+Lets change folder into the setup cookbook.
 
 -
 
@@ -128,13 +130,13 @@ We want git to start tracking the entire contents of this folder and any content
 
 -
 
-Now we need to tell git what files it should start tracking in source control. In our case, we want to add all the files to the repository and we can do that by providing a period following the add command.
+Now we need to tell git what files it should start tracking in source control. In our case, we want to add all the files to the repository and we can do that by executing `git add dot`.
 
 This will place all the files into a staging area.
 
 -
 
-I like to think of the staging area as placing bunch of items into a box. Like a care package you would send to a love one.
+I like to think of the staging area as placing a bunch of items into a box. Like a care package you would send to a love one.
 
 Staging files means - put them in the box, don't close it up because I may add a few things, don't close it up because I may replace or remove a few things. But put the items in the box because eventually we are going to close that box - when it is ready to send it off.
 
