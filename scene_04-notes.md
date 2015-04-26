@@ -6,3 +6,5 @@ In my experience beginners have a difficult time with learning new concepts and 
 There needs to be a stronger value proposition given for using source control. Walking through the various popular ways to track versions of documents through file extensions to wikis or scripts.
 
 Some additional exercises could be built around git. After the initial creation of the cookbook and copying in of the recipe the README could be updated to describe what the recipe does. This would create an opportunity use git to visualize the differences before before committing the new changes (`git diff`). Then after saving this commit they could review all the changes (`git log`).
+
+The attendees could also be taught the `chef generate recipe` command as well.
