@@ -2,23 +2,53 @@
 
 Automation is beautiful when it works. A work of art. When it doesn't work -- well it's a work of something.
 
-As we start to define our infrastructure as code and tracking it in source code and then releasing we also need to start thinking about testing it. That seems obvious, of course, test the recipes within the cookbooks that we write.
+As we start to define our infrastructure as code we also need to start thinking about testing it.
 
-We could define a process that every time we make a change to our tools and scripts it needs to be tested. And we probably would be fairly successful at first, like a New Year's resolution, but start to let things slide over time.
-
-And that's because verifying changes is work. It's work to setup the test environment or environments, load your scripts, and then execute them. If its manual work it has the chance of being forgotten or incorrectly done.
+How could we solve a problem like this?
 
 -
 
-Well if Chef is to replace our existing tools it is going to need to provide a way to automate some of the pain of testing out policies that we have defined.
+We can start by first mandating that all cookbooks are tested before they are deployed to production. What steps would it take to test one of the cookbooks you created in the last section?
+
+Write down or type out as many of the steps you can think of required to test one of the cookbooks.
+
+When you are ready turn to another person in the class and compare your lists. Create a complete list with all the steps that you have identified.
 
 -
 
-ChefDK comes with another tool named Test Kitchen. Test Kitchen is a test harness tool that allows us to execute the cookbook recipes against virtual  or cloud instances.
+Alright. Now with a more complete list, I want for you to roughly estimate how long it would take to test the cookbook?
+
+> Allow a short amount of time for estimation. Reminding them again that this is only an estimate and is not something that has to be absolute known value.
 
 -
 
-Kitchen is a command-line application that allows us to manage the testing lifecycle. This application allows us to create, converge, verify, and destroy instances.
+Based on your length of time for testing your cookbook lets discuss: How often you would test your cookbook?
+
+-
+
+Alright. How often do you think changes to the cookbook will occur?
+
+-
+
+And the leading question: What happens when the rate of cookbook changes exceed the time interval it takes to verify the cookbook?
+
+-
+
+Testing tools provide automated ways to ensure that the code we write accomplishes its intended goal. It also helps us understand the intent of our code by providing executable documentation - as tests are able to run in virtualized environments. We add new cookbook features and write tests to preserve this functionality so that when we - or anyone else on the team - returns to a cookbook tomorrow (or in a few months) to make additional changes we are certain we don't accidently break something.
+
+-
+
+Well if Chef is to replace our existing tools it is going to need to provide a way to automate some of the pain away from testing the policies that we have defined.
+
+-
+
+ChefDK comes with another tool named Test Kitchen. Test Kitchen is a test harness tool that allows us to execute the cookbook recipes against virtual or cloud instances.
+
+More fully, it allows us to create a machine solely for testing, converge a run list of recipes on that machine, verify that the machine is in the desired state, and then destroy the machine.
+
+-
+
+Kitchen is a command-line application that allows us to manage the testing lifecycle.
 
 Similar to other tools within the ChefDK we can ask for help to see the available commands.
 
@@ -28,24 +58,334 @@ The `init` command, by its name, seems like a good place to get started.
 
 `kitchen help init` tells us that it will add Test Kitchen support to an existing project. It creates a dot-kitchen-dot-yaml file within the project's root directory.
 
-There are a number of flags and other options but let's see if the cookbooks we created need to be setup.
+There are a number of flags and other options but let's see if the cookbooks we created even needs us to initialize test kitchen.
 
 -
 
 Using `tree` to look at the setup cookbook, showing all hidden files and ignoring all git files, it looks like our cookbook already has a dot-kitchen-dot-yaml.
 
-It was created alongside the other files when we ran the `chef generate cookbook` command when we originally created this cookbook.
+It was actually created alongside the other files when we ran the `chef generate cookbook` command when we originally created this cookbook.
 
 Let's take a look at the contents of this file.
 
 -
 
-The kitchen-yaml file defines a number of configuration entries which the kitchen command uses during execution.
+The dot-kitchen-dot-yaml file defines a number of configuration entries which the kitchen command uses during execution.
 
 -
 
-So we don't need to run `kitchen init` because we've already have a default kitchen file. We may need to change it to accomplish our objectives so lets learn about a few of the fields within the configuration file.
+So we don't need to run `kitchen init` because we already have a default kitchen file. We may still need to update it to accomplish our objectives so lets learn more about the various fields in the configuration file.
 
 -
 
-! THE KITCHEN DRIVER
+The first key is driver, which has a single key-value pair that specifies the name of the driver Kitchen will use when executed. The driver is responsible for creating the machine that we will use to test our cookbook. There are lots of different drivers available - two very popular ones are the docker and vagrant driver.
+
+-
+
+The second key is provisioner, which also has a single key-value pair which is the name of the provisioner Kitchen will use when executed. This provisioner is responsible for how it applies code to the machine that the driver created. Here the default value is chef_zero.
+
+-
+
+The third key is platforms, which contains a list of all the platforms that Kitchen will test against when executed. This should be a list of all the platforms that you want your cookbook to support.
+
+-
+
+The fourth key is suites, which contains a list of all the test suites that Kitchen will test against when executed. Each suite usually defines a unique combination of run lists that exercise all the recipes within a cookbook.
+
+Here in this example this suite is named 'default'.
+
+-
+
+This default setup will execute the run list containing: The setup cookbook's default recipe.
+
+-
+
+It is important to recognize that within the dot-kitchen-dot-YAML file we defined two fields that create a test matric. The number of platforms we want to support multiplied by the number of test suites that we defined.
+
+-
+
+We can visualize this test matrix by running the command `kitchen list`.
+
+In the output we see that an instance is created in the list for every suite and every platform. In our current file we have one suite, named 'default', and two platforms. First the ubuntu twelve-dot-zero-four platform.
+
+-
+
+And the second centos-six-dot-four platform.
+
+-
+
+Remembering our objective. We want to update our dot-kitchen-dot-yaml file to use the Docker driver and we want to test against a single platform named centos-six-dot-four.
+
+-
+
+Docker is a driver. Lets replace the existing vagrant driver, in our dot-kitchen-dot-YAML, with the docker driver.
+
+> The reason we are using the docker driver is that it is possible to run this on cloud platforms and perform virtualization within the already existing virtualization.
+
+-
+
+We also want to update our platforms to list only centos-six-dot-four.
+
+-
+
+Now, run the `kitchen list` command to display our test matrix. We should see a single instance.
+
+-
+
+Wonderful. Now that we've defined the test matrix that we want to support. It is time to understand how to use Test Kitchen to creates a machine, converge a run list of recipes on that machines, verify that the machine is in the desired state, and then destroy the machine.
+
+-
+
+The first kitchen command is `kitchen create`.
+
+To create an instance means to turn on virtual or cloud machines for the platforms specified in the kitchen configuration.
+
+In our case, this command would use the Docker driver to create a docker image based on centos-six-dot-four.
+
+> By default, run without any parameters, it will create all instances defined in the `kitchen list`.
+
+> The command does allow you to create specific instances by name or all instances that match a provided criteria.
+
+-
+
+Creating an image gives us a machine to test our cookbooks but it still would leave us with the work of installing chef and applying the cookbook defined in our dot-kitchen-dot-YAML run list.
+
+So let me introduce you to the second kitchen command: `kitchen converge`.
+
+Converging an instance will create the instance if it has not already been created. Then it will install chef and apply that cookbook to that instance.
+
+In our case, this command would take our image and install chef and apply the setup cookbook's default recipe.
+
+> It also, like the`kitchen create` commands, defaults to all instances when executed without any parameters. And is capable of accepting parameters to converge a specific instance or all instances that match the provided criteria.
+
+
+-
+
+Lets use `kitchen converge` to verify that the setup cookbook is able to converge the default recipe against the platform centos-six-dot-four.
+
+The setup cookbook should successfully apply the default recipe. If an error has occured lets stop and troubleshoot the issues.
+
+-
+
+Now, I want you to do the same thing again for the apache cookbook. Update the dot-kitchen-dot-yaml file so that it converges the apache cookbook's default recipe on the centos-six-dot-four platform with the docker driver.
+
+> Allow time for the attendees to complete the exercise
+
+-
+
+Same as before we update the dot-kitchen-dot-YAML file to use the docker driver and the centos-six-dot-four platform.
+
+-
+
+We move into the apache cookbook folder ...
+
+-
+
+And execute `kitchen converge` to validate that our apache cookbook's default recipe is able to converge on the centos-six-dot-four instance.
+
+-
+
+So what does this test when kitchen converges a recipe?
+
+-
+
+What does it NOT test when kitchen converges a recipe?
+
+Converging the recipe is able to validate that our recipe is defined without error. However, converging a particular recipe does not validate that the intended goal of the recipe has been successfully executed.
+
+-
+
+What is left to validate to ensure that the cookbook successfully applied the policy defined in the recipe?
+
+Converging the instance ensured that the recipe was able to install a package, write out a file, and start and enable a service. But what it was unable to check to see if the system was configured correctly -- is our machine serving up our custom home page?
+
+-
+
+There is no automation that automically understands the intention defined in the recipes we create. To do that we will define our own automated test.
+
+Lets explore testing by adding a simple test to validate that the tree package is installed after converging the setup cookbook's default recipe.
+
+-
+
+The third kitchen command is `kitchen verify`.
+
+To verify an instance means to:
+
+* create a virtual or cloud machines, if needed
+* converge the instance, if needed
+* And then execute a collection of defined tests against the instance
+
+In our case, our machine has already been created and converged so when we run `kitchen verify` it will execute the tests that we will later define.
+
+> It works as the other commands do with regard to parameters and targeting instances.
+
+-
+
+The fourth kitchen command is `kitchen destroy`.
+
+Destroy is available at all stages and essentially cleans up the machine.
+
+> It works as all the other commands do with regard to parameters and targeting instances.
+
+-
+
+There a single command that encapsulates the entire workflow - that is `kitchen test`. It works as all the other commands do with regard to parameters and targeting instances.
+
+Kitchen test ensures that if the machine was in any state - created, converged, or verified - that it is immediately destroyed. This ensures a clean machine to perform all of the steps: create; converge; and verify. `kitchen test` completes the entire execution by destroying the machine at the end.
+
+Traditionally this all encompassing workflow is useful to ensure that we have a clean state when we start and we do not leave a mess behind us.
+
+-
+
+So `kitchen verify` and `kitchen test` are the two kitchen commands that we can use to execute a body of tests against our instances. Now it is time to define those tests with ServerSpec.
+
+ServerSpec is one of many possible test frameworks that Test Kitchen supports. It is a popular choice for those doing Chef cookbook development because ServerSpec is built on a Ruby testing framework named RSpec.
+
+RSpec is similar to Chef - as it is a Domain Specific Language, or DSL, layered on top of Ruby. Where Chef gives us a DSL to describe the policy of our system, RSpec allows us to describe the expectations of tests that we define. ServerSpec adds a number of helpers to RSpec to make it easy to test the state of a system.
+
+-
+
+Here is an example of an isolated ServerSpec example that states: I expect the package named 'tree' to be installed.
+
+-
+
+For our test to work with Test Kitchen there are a number of conventions that we need to adhere to have our test code load correctly.
+
+First, we need to create a test file, often refered to as a spec file at the following path. The structure of the path is a convention defined by Test Kitchen and will automatically be loaded when we run `kitchen verify`.
+
+Within the spec we need to first require a helper file. The helper is were we keep common helper methods and library requires in one location. This allows us to require a single file within each of our tests.
+
+-
+
+Second we define a describe method. RSpec, which ServerSpec is built on uses an english-like syntax to help us describe the various scenarios and examples that we are testing.
+
+Describe is a method that takes two parameters - the first is the name of fully-qualifed recipe to execute (cookbook name colon-colon recipe name).
+
+The second parameter is the block between the the do and end. Within that block we can define more describe blocks that allow us to further refine the scenario we are testing.
+
+-
+
+Here is that example expectation that I showed you earlier except now it is displayed here within this context. This states that when we converge the setup cookbook's default recipe we want to assert that the tree package has been installed.
+
+-
+
+Lets take a moment to describe the reason behind this long directory path. Within our cookbook we define a test directory and within that test directory we define another directory named 'integration'. This is the basic file path that Test Kitchen expects to find the specifications that we have defined.
+
+-
+
+The next part the path, 'default', corresponds to the name of the test suite that is defined in the dot-kitchen-dot-YAML file. In our case the name of the suite is 'default' so when test kitchen performs a `kitchen verify` for the default suite it will look within the 'default' folder for the specifications to run.
+
+-
+
+'serverspec' is the type of kind of tests that we want to define. Test Kitchen supports a number of testing frameworks.
+
+-
+
+The final part of the path is the specification file. This is a ruby file, as you are probably already aware. The naming convention for this file is the recipe name with the appended suffix of underscore-spec-dot-R-B. All specification files must end with underscore-spec-dot-R-B
+
+-
+
+With the first specification created - lets verify the package named 'tree' is installed when we apply the setup cookbooks default recipe using the `kitchen verify` command to execute our tests.
+
+-
+
+With the first test completed. It is time to commit the changes to source control.
+
+-
+
+Now that we've explored the basic structure of writing specifications to validate our cookbook with a single expectation that the tree package is installed.
+
+What are other resources within the recipe that we could tests?
+
+-
+
+ServerSpec provides a large number of helpers to assist us with many different resources on our system. Important to us in testing more of our setup cookbook's default recipe is the ability to verify if a file was written, what are the permissions of that file, and what are the contents.
+
+Lets look at a few examples:
+
+-
+
+Here we are describing an expectation that the file named slash-E-T-C-slash-Pass-W-D is a file.
+
+-
+
+Here we are describing an expectation that the file named slash-E-T-C-slash-H-T-T-P-D-slash-conf-slash-H-T-T-P-D-dot-conf have contents that match the following regular expression. Asserting that somewhere in the file we will find the following bit of text.
+
+-
+
+Here we are describing an expectation that the file named slash-E-T-C-slash-sudoers should be owned by the root user.
+
+-
+
+Now as an exercise I want you to define additional tests that validate the remaining resources within our default recipe.
+
+Add examples for the remaining package resources that are converged by the "setup" cookbooks default recipe
+
+You may also add tests for the file resource to ensure the file is present, that the contents are correctly defined, that it is owned by a particular user and owned by a particular group.
+
+> This is particularly vague as there are no requirements that they have to test.
+
+-
+
+Alright, lets review.
+
+Here we are verifying the package git is installed. The structure of the test is very similar to the one we demonstrated earlier. You likely have another test that validates the editor you specified is also installed.
+
+-
+
+For the file I chose only to verify that the file named slash-E-T-C-slash-M-O-T-D is owned by the root user. You may have verified that it was a file, that it belonged to a group, and that it contained content you felt important to verfiy.
+
+-
+
+If all the tests that you defined are working then it is time to commit our changes to version control.
+
+-
+
+What questions can we help you answer?
+
+-
+
+Wonderful. Now lets turn our focus towards testing the apache cookbook.
+
+-
+
+What are some things we could test to validate our web server has deployed correctly?
+
+The apache cookbook is similar to the setup cookbook. It has a package and file which are things that we have already tested. The new thing is the service. We could review the ServerSpec documentation to find examples on how to test the service.
+
+But does testing the package, file and service validate that apache is hosting our static web page and returning the content to visitors of the machine?
+
+-
+
+What manual tests do we use now to validate a working web server?
+
+After applying the recipes in the past we visited the site through a browser or verified the content through running the command 'curl localhost'.
+
+Is that something that we could test as well? Does ServerSpec provide the way for us to execute a command and verify the results?
+
+-
+
+So for this final exercise you are going to create a test file for the apache cookbook's default recipe.
+
+That test will validate that you have a working web server. This means I want you to add the tests that you feel are necessary that the system is installed and working correctly.
+
+When you are done execute your tests with `kitchen verify`.
+
+-
+
+First I move into the apache cookbook's directory.
+
+-
+
+Here I chose to validate that the port 80 should be listening for incoming connections.
+
+And I also validated that the standard out from the command "curl http://localhost" should match "Hello, world!".
+
+-
+
+Again, lets commit the work.
+
+-
+
+What questions can we help you answer?
+
