@@ -4,7 +4,9 @@ Automation is beautiful when it works. A work of art. When it doesn't work -- we
 
 As we start to define our infrastructure as code we also need to start thinking about testing it.
 
-How could we solve a problem like this?
+This is all too common a story that happens when delivering deployment scripts to production after they were only executed on a team member's workstation or in an integration environment. Essentially every platform except the ones running in production.
+
+So how could we solve a problem like this?
 
 -
 
@@ -38,13 +40,13 @@ Testing tools provide automated ways to ensure that the code we write accomplish
 
 -
 
-Well if Chef is to replace our existing tools it is going to need to provide a way to automate some of the pain away from testing the policies that we have defined.
+Well if Chef is to replace our existing tools it is going to need to provide a way to make testing the policies more delightful.
 
 -
 
 ChefDK comes with another tool named Test Kitchen. Test Kitchen is a test harness tool that allows us to execute the cookbook recipes against virtual or cloud instances.
 
-More fully, it allows us to create a machine solely for testing, converge a run list of recipes on that machine, verify that the machine is in the desired state, and then destroy the machine.
+More fully, it allows us to create a instance solely for testing, converge a run list of recipes on that instance, verify that the instance is in the desired state, and then destroy the instance.
 
 -
 
@@ -78,11 +80,11 @@ So we don't need to run `kitchen init` because we already have a default kitchen
 
 -
 
-The first key is driver, which has a single key-value pair that specifies the name of the driver Kitchen will use when executed. The driver is responsible for creating the machine that we will use to test our cookbook. There are lots of different drivers available - two very popular ones are the docker and vagrant driver.
+The first key is driver, which has a single key-value pair that specifies the name of the driver Kitchen will use when executed. The driver is responsible for creating the instance that we will use to test our cookbook. There are lots of different drivers available - two very popular ones are the docker and vagrant driver.
 
 -
 
-The second key is provisioner, which also has a single key-value pair which is the name of the provisioner Kitchen will use when executed. This provisioner is responsible for how it applies code to the machine that the driver created. Here the default value is chef_zero.
+The second key is provisioner, which also has a single key-value pair which is the name of the provisioner Kitchen will use when executed. This provisioner is responsible for how it applies code to the instance that the driver created. Here the default value is chef_zero.
 
 -
 
@@ -100,7 +102,7 @@ This default setup will execute the run list containing: The setup cookbook's de
 
 -
 
-It is important to recognize that within the dot-kitchen-dot-YAML file we defined two fields that create a test matric. The number of platforms we want to support multiplied by the number of test suites that we defined.
+It is important to recognize that within the dot-kitchen-dot-YAML file we defined two fields that create a test matrix. The number of platforms we want to support multiplied by the number of test suites that we defined.
 
 -
 
@@ -132,13 +134,13 @@ Now, run the `kitchen list` command to display our test matrix. We should see a 
 
 -
 
-Wonderful. Now that we've defined the test matrix that we want to support. It is time to understand how to use Test Kitchen to creates a machine, converge a run list of recipes on that machines, verify that the machine is in the desired state, and then destroy the machine.
+Wonderful. Now that we've defined the test matrix that we want to support. It is time to understand how to use Test Kitchen to creates a instance, converge a run list of recipes on that instances, verify that the instance is in the desired state, and then destroy the instance.
 
 -
 
 The first kitchen command is `kitchen create`.
 
-To create an instance means to turn on virtual or cloud machines for the platforms specified in the kitchen configuration.
+To create an instance means to turn on virtual or cloud instances for the platforms specified in the kitchen configuration.
 
 In our case, this command would use the Docker driver to create a docker image based on centos-six-dot-four.
 
@@ -148,7 +150,7 @@ In our case, this command would use the Docker driver to create a docker image b
 
 -
 
-Creating an image gives us a machine to test our cookbooks but it still would leave us with the work of installing chef and applying the cookbook defined in our dot-kitchen-dot-YAML run list.
+Creating an image gives us a instance to test our cookbooks but it still would leave us with the work of installing chef and applying the cookbook defined in our dot-kitchen-dot-YAML run list.
 
 So let me introduce you to the second kitchen command: `kitchen converge`.
 
@@ -197,7 +199,7 @@ Converging the recipe is able to validate that our recipe is defined without err
 
 What is left to validate to ensure that the cookbook successfully applied the policy defined in the recipe?
 
-Converging the instance ensured that the recipe was able to install a package, write out a file, and start and enable a service. But what it was unable to check to see if the system was configured correctly -- is our machine serving up our custom home page?
+Converging the instance ensured that the recipe was able to install a package, write out a file, and start and enable a service. But what it was unable to check to see if the system was configured correctly -- is our instance serving up our custom home page?
 
 -
 
@@ -211,11 +213,11 @@ The third kitchen command is `kitchen verify`.
 
 To verify an instance means to:
 
-* create a virtual or cloud machines, if needed
+* create a virtual or cloud instances, if needed
 * converge the instance, if needed
 * And then execute a collection of defined tests against the instance
 
-In our case, our machine has already been created and converged so when we run `kitchen verify` it will execute the tests that we will later define.
+In our case, our instance has already been created and converged so when we run `kitchen verify` it will execute the tests that we will later define.
 
 > It works as the other commands do with regard to parameters and targeting instances.
 
@@ -223,7 +225,7 @@ In our case, our machine has already been created and converged so when we run `
 
 The fourth kitchen command is `kitchen destroy`.
 
-Destroy is available at all stages and essentially cleans up the machine.
+Destroy is available at all stages and essentially cleans up the instance.
 
 > It works as all the other commands do with regard to parameters and targeting instances.
 
@@ -231,7 +233,7 @@ Destroy is available at all stages and essentially cleans up the machine.
 
 There a single command that encapsulates the entire workflow - that is `kitchen test`. It works as all the other commands do with regard to parameters and targeting instances.
 
-Kitchen test ensures that if the machine was in any state - created, converged, or verified - that it is immediately destroyed. This ensures a clean machine to perform all of the steps: create; converge; and verify. `kitchen test` completes the entire execution by destroying the machine at the end.
+Kitchen test ensures that if the instance was in any state - created, converged, or verified - that it is immediately destroyed. This ensures a clean instance to perform all of the steps: create; converge; and verify. `kitchen test` completes the entire execution by destroying the instance at the end.
 
 Traditionally this all encompassing workflow is useful to ensure that we have a clean state when we start and we do not leave a mess behind us.
 
@@ -353,7 +355,7 @@ What are some things we could test to validate our web server has deployed corre
 
 The apache cookbook is similar to the setup cookbook. It has a package and file which are things that we have already tested. The new thing is the service. We could review the ServerSpec documentation to find examples on how to test the service.
 
-But does testing the package, file and service validate that apache is hosting our static web page and returning the content to visitors of the machine?
+But does testing the package, file and service validate that apache is hosting our static web page and returning the content to visitors of the instance?
 
 -
 
